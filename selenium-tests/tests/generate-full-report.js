@@ -122,10 +122,6 @@ async function createExcelReport() {
   const outputPath = path.resolve(__dirname, 'comprehensive-test-report.xlsx');
   await workbook.xlsx.writeFile(outputPath);
   
-  // Also copy to artifacts so user can download it easily
-  const artifactsPath = path.resolve('C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\1ccef20e-11ae-40a1-9489-8d9604fff66b\\comprehensive-test-report.xlsx');
-  await workbook.xlsx.writeFile(artifactsPath);
-  
   console.log('Successfully generated complete Excel report at:', outputPath);
   console.log(`Total Test Cases Exported: ${testCases.length}`);
 }

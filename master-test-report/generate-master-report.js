@@ -73,9 +73,6 @@ async function createMasterReport() {
   const outPath = path.resolve(__dirname, 'master-test-report.xlsx');
   await workbook.xlsx.writeFile(outPath);
   
-  const artifactPath = path.resolve('C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\1ccef20e-11ae-40a1-9489-8d9604fff66b\\master-test-report.xlsx');
-  await workbook.xlsx.writeFile(artifactPath);
-  
   console.log('Successfully generated MASTER Excel report at:', outPath);
   console.log(`Total Master Test Cases Exported: ${testCases.length}`);
 }

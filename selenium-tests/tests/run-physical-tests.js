@@ -163,10 +163,7 @@ async function runTests() {
   const outPath = path.resolve(__dirname, 'physical-test-report.xlsx');
   await workbook.xlsx.writeFile(outPath);
   
-  const artifactPath = path.resolve('C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\1ccef20e-11ae-40a1-9489-8d9604fff66b\\physical-test-report.xlsx');
-  await workbook.xlsx.writeFile(artifactPath);
-
-  console.log(`🎉 Finished! Physical execution saved to: ${artifactPath}`);
+  console.log(`🎉 Finished! Physical execution saved to: ${outPath}`);
 }
 
 runTests();

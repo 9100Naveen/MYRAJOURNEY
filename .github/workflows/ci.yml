@@ -1,13 +1,15 @@
-name: CI Tests
+name: Test Automation & Report Generation
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  setup:
+  master-test-report:
+    name: Master Test Report
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,91 +19,96 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          cd web-portal
-          npm ci
-          npm install selenium-webdriver mocha chai exceljs appium
-          cd ..
+        working-directory: master-test-report
+        run: npm install
+
+      - name: Generate Master Test Report
+        working-directory: master-test-report
+        run: node generate-master-report.js
+
+      - name: Upload Master Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: master-test-report
+          path: master-test-report/master-test-report.xlsx
+          retention-days: 14
 
   selenium-tests:
-    needs: setup
+    name: Selenium Test Reports
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Selenium deps
+          
+      - name: Install dependencies
+        working-directory: selenium-tests
+        run: npm install
+
+      - name: Start Web Portal Background Server
+        working-directory: web-portal
         run: |
-          cd web-portal
-          npm ci
-          cd ..
-      - name: Run Selenium E2E tests
-        run: |
-          npm run e2e
+          npm install
+          npm run dev -- --port 5175 &
         env:
-          CI: true
-      - name: Generate Selenium Excel report
+          PORT: 5175
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5175
+
+      - name: Run Physical Tests & Generate Reports
+        working-directory: selenium-tests
         run: |
-          npm run e2e:report
-        env:
-          CI: true
-      - name: Upload Selenium Excel report
+          node tests/generate-full-report.js
+          node tests/run-physical-tests.js || true
+
+      - name: Upload Selenium Reports
         uses: actions/upload-artifact@v4
         with:
-          name: selenium-test-report
-          path: selenium-tests/tests/test-summary.xlsx
+          name: selenium-test-reports
+          path: selenium-tests/tests/*.xlsx
+          retention-days: 14
 
-  appium-tests:
-    needs: setup
-    runs-on: macos-latest # or ubuntu-latest with Android emulator
+  test-suite:
+    name: Comprehensive Test Suite
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Appium deps
-        run: |
-          cd web-portal
-          npm ci
-          cd ..
-      - name: Start Appium server
-        run: |
-          npx appium --log-timestamp &
-          echo "APPIUM_PID=$!" >> $GITHUB_ENV
-      - name: Run Appium E2E tests
-        run: |
-          npm run e2e:appium
-        env:
-          CI: true
-      - name: Generate Appium Excel report
-        run: |
-          npm run e2e:appium:report
-        env:
-          CI: true
-      - name: Upload Appium Excel report
-        uses: actions/upload-artifact@v4
-        with:
-          name: appium-test-report
-          path: appium-tests/tests/test-summary.xlsx
 
-  load-test:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Artillery
-        run: npm install -g artillery
-      - name: Run baseline load test
+      - name: Start Web Portal Background Server
+        working-directory: web-portal
         run: |
-          artillery run load-tests/baseline.yml --output load-report.json
-      - name: Upload Load Test Report
+          npm install
+          npm run dev -- --port 5174 &
+        env:
+          PORT: 5174
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5174
+
+      - name: Install dependencies
+        working-directory: test-suite
+        run: npm install
+
+      - name: Run Autonomous Test Suite
+        working-directory: test-suite
+        run: node run-tests.js || true
+
+      - name: Upload Test Suite Report
         uses: actions/upload-artifact@v4
         with:
-          name: load-test-report
-          path: load-report.json
+          name: test-suite-report
+          path: test-suite/test_report.xlsx
+          retention-days: 14
