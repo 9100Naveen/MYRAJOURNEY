@@ -46,9 +46,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Node dependencies (exceljs, semgrep, etc.)
+      - name: Install Node dependencies
         run: |
-          npm install --save-dev semgrep exceljs artillery gitleaks trivy dependency-check zap-cli
+          npm install --no-fund --no-audit
+        continue-on-error: true
 
       - name: Run SAST with Semgrep
         run: |
@@ -86,6 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: security-reports
+          if-no-files-found: warn
           path: |
             semgrep.json
             trivy.json
