@@ -45,11 +45,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install Node dependencies (exceljs, semgrep, etc.)
         run: |
-          npm ci
           npm install --save-dev semgrep exceljs artillery gitleaks trivy dependency-check zap-cli
 
       - name: Run SAST with Semgrep
