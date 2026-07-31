@@ -1,0 +1,15 @@
+// baseline.yml
+config:
+  target: "http://localhost:5174"
+  phases:
+    - duration: 60
+      arrivalRate: 100  # 100 users per second, approximates 100 concurrent over time
+      name: "Baseline Load Test"
+scenarios:
+  - name: "Login Page"
+    flow:
+      - get:
+          url: "/login"
+          capture:
+            - json: "$.status"
+              as: "status"

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chai": "^6.2.2",
+    "exceljs": "^4.4.0",
+    "mocha": "^11.7.6",
+    "selenium-webdriver": "^4.46.0"
+  }
+}

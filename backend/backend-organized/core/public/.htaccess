@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteBase /backend-organized/core/public/
+
+# Pass Authorization header to PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Allow direct access to specific PHP files (bypass routing)
+RewriteRule ^(admin-api|doctor-patients|clear-cache)\.php$ - [L]
+
+# If the file or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise, route everything through index.php
+RewriteRule ^(.*)$ index.php [QSA,L]

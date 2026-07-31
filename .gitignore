@@ -1,0 +1,12 @@
+node_modules/
+vendor/
+.env
+.DS_Store
+*.log
+*.zip
+coverage/
+.nyc_output/
+build/
+dist/
+scratch/
+test_openrouter.ps1

@@ -1,0 +1,30 @@
+API Log Started[2026-01-27 02:08:59] thAMV022: instructions=[swelling], food=[After Food], morning=[1]
+[2026-01-27 02:35:17] POST /api/v1/reports (PATH_INFO: /api/v1/reports)
+[2026-01-27 02:35:17] RE+01:00+0100RCETth_+01:00+0100thCET - January00Eth: Array
+(
+    [file] => Array
+        (
+            [name] => test_report.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\Users\Admin\AppData\Local\Temp\tes8772.tmp
+            [error] => 0
+            [size] => 15
+        )
+
+)
+
+[2026-01-27 02:35:17] RE+01:00+0100RCETth_+01:00+0100thCET - +01:00+0100thCET: Array
+(
+    [patient_id] => 25
+    [title] => Test API Report
+    [description] => Testing API endpoint directly
+)
+
+[2026-01-28 13:44:15] POST /api/v1/auth/login (PATH_INFO: /api/v1/auth/login)
+[2026-01-28 13:44:40] POST /api/v1/auth/login (PATH_INFO: /api/v1/auth/login)
+[2026-01-28 13:45:13] POST /api/v1/auth/login (PATH_INFO: /api/v1/auth/login)
+[2026-01-28 13:45:13] GET /api/v1/patients/me/overview (PATH_INFO: /api/v1/patients/me/overview)
+[2026-01-28 13:45:13] GET /api/v1/reports (PATH_INFO: /api/v1/reports)
+[2026-01-28 13:46:04] POST /api/v1/auth/login (PATH_INFO: /api/v1/auth/login)
+[2026-01-28 13:46:04] GET /api/v1/patients/me/overview (PATH_INFO: /api/v1/patients/me/overview)
+[2026-01-28 13:46:04] GET /api/v1/reports (PATH_INFO: /api/v1/reports)

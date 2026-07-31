@@ -1,0 +1,13 @@
+{
+    "name": "myrajourney/backend",
+    "description": "Backend for MyRA Journey",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    }
+}
