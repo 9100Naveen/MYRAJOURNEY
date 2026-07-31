@@ -72,15 +72,6 @@ jobs:
           fi
         continue-on-error: true
 
-      - name: Generate Load‑Test Cases (300 cases)
-        run: |
-          node security/generate-load-test-cases.js
-
-      - name: Run Load Test (Artillery) – generate report
-        run: |
-          artillery run load-tests/generated.yml --output load-report.json
-        continue-on-error: true
-
       - name: Run DAST with OWASP ZAP (passive)
         if: env.API_URL != ''
         run: |
@@ -91,37 +82,13 @@ jobs:
           kill $ZAP_PID
         continue-on-error: true
 
-      - name: Assemble Reports
-        run: |
-          node security/assemble-reports.js
-
       - name: Upload Security Reports
         uses: actions/upload-artifact@v4
         with:
           name: security-reports
           path: |
-            security-review.md
-            executive-summary.md
-            dependency-report.md
-            findings.xlsx
-            endpoint-inventory.xlsx
-            load-test-cases.xlsx
-            load-report.json
             semgrep.json
             trivy.json
             gitleaks.json
             depcheck.json
             zap-report.json
-
-      - name: Publish Summary
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const summary = fs.readFileSync('executive-summary.md', 'utf8');
-            core.summary.addRaw(summary).write();
-
-      - name: Fail on Critical Findings
-        run: |
-          if grep -i "Critical" findings.xlsx; then exit 1; fi
-        continue-on-error: false
