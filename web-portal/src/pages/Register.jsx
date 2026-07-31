@@ -135,7 +135,7 @@ const Register = () => {
           
           {/* Role selector */}
           <div className="auth-role-select" style={{ marginBottom: '8px' }}>
-            {['PATIENT', 'DOCTOR', 'ADMIN'].map((r) => (
+            {['PATIENT', 'DOCTOR'].map((r) => (
               <button
                 key={r}
                 type="button"
