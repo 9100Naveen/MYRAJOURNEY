@@ -238,6 +238,20 @@ const Login = () => {
         </form>
 
         <div style={{ textAlign: 'center', marginTop: '24px' }}>
+          {role === 'ADMIN' && (
+            <div style={{ 
+              color: '#94a3b8', 
+              fontSize: '12.5px', 
+              marginBottom: '14px',
+              padding: '10px',
+              background: 'rgba(255,255,255,0.05)',
+              borderRadius: '8px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              <ShieldAlert size={14} style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '4px', color: '#f43f5e' }} />
+              Admin registration is disabled. <br/>Use <strong>admin@myrajourney.com</strong> / <strong>password123</strong>
+            </div>
+          )}
           <span style={{ color: '#94a3b8', fontSize: '14px' }}>
             Don't have an account?{' '}
           </span>
